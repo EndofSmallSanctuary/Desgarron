@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#4AE4DFDF"
+    tools:context=".SettingsFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/settings_field1_header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"
+            android:textSize="20sp"
+            android:text="Сервер X"
+            android:textColor="@color/black"
+            android:fontFamily="@font/gilroy_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/settings_field1_info"
+            app:layout_constraintTop_toBottomOf="@id/settings_field1_header"
+            app:layout_constraintStart_toStartOf="@id/settings_field1_header"
+            android:textSize="15sp"
+            android:text="Адрес сервера для работы терминала"
+            android:textColor="@color/light_gray"
+            android:fontFamily="@font/gilroy_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            app:layout_constraintStart_toStartOf="@id/settings_field1_info"
+            app:layout_constraintTop_toBottomOf="@id/settings_field1_info"
+            android:layout_width="wrap_content"
+            android:id="@+id/settings_field_terminal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:hint="Введите адрес сервера"
+            android:textSize="17sp"
+            android:fontFamily="@font/gilroy_regular"
+            android:textColor="#E49308"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/settings_field2_header"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="15dp"
+                android:textSize="20sp"
+                android:text="Сервер Y"
+                android:textColor="@color/black"
+                android:fontFamily="@font/gilroy_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/settings_field2_info"
+                app:layout_constraintTop_toBottomOf="@id/settings_field2_header"
+                app:layout_constraintStart_toStartOf="@id/settings_field2_header"
+                android:textSize="15sp"
+                android:text="Адрес сервера для работы с накладными"
+                android:textColor="@color/light_gray"
+                android:fontFamily="@font/gilroy_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                app:layout_constraintStart_toStartOf="@id/settings_field2_info"
+                app:layout_constraintTop_toBottomOf="@id/settings_field2_info"
+                android:layout_width="wrap_content"
+                android:id="@+id/settings_field_waybills"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:hint="Введите адрес сервера"
+                android:textSize="17sp"
+                android:fontFamily="@font/gilroy_regular"
+                android:textColor="#E49308"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

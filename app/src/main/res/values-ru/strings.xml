@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Desgarron</string>
+    <string name="terminal">Терминал</string>
+    <string name="waybills">Накладные</string>
+    <string name="settings">Настройки</string>
+</resources>

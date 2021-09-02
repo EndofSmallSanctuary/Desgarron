@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_enter_to_app_24.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.3807291666666667" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_music_note_24.xml" value="0.3807291666666667" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/layout/activity_main.xml" value="0.5912882298424467" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/layout/app_navigation_bar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/layout/content_main.xml" value="0.28894927536231885" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/layout/fragment_e_m_p.xml" value="0.25" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/layout/fragment_settings.xml" value="0.3563636363636364" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/layout/fragment_terminal.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/menu/bottom_navigation.xml" value="0.3645833333333333" />
+        <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/menu/menu_main.xml" value="0.3645833333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
