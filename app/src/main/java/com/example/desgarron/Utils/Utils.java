@@ -1,5 +1,7 @@
 package com.example.desgarron.Utils;
 
+import java.security.MessageDigest;
+
 public class Utils {
     public static String bytesToHexString(byte[] bArr) {
         StringBuilder sb = new StringBuilder();
@@ -17,5 +19,14 @@ public class Utils {
             bArr[i / 2] = (byte) ((Character.digit(str.charAt(i), 16) << 4) + Character.digit(str.charAt(i + 1), 16));
         }
         return bArr;
+    }
+
+
+    public static byte[] getPasswordHash(String str) {
+        try {
+            return MessageDigest.getInstance("MD5").digest(str.getBytes("UTF-8"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

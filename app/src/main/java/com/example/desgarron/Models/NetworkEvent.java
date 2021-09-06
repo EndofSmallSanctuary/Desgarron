@@ -6,11 +6,12 @@ import android.os.Parcelable;
 public class NetworkEvent implements Parcelable {
 
     //EVENT-TYPE CONSTANTS PRE-DEFINED
-    public static final int EVENT_NETWORK_ERROR = 1;
+    public static final int EVENT_NETWORK_DISCONNECTED = 1;
     public static final int EVENT_WARNING = 2;
-    public static final int EVENT_NETWORK_SUCCESS = 3;
+    public static final int EVENT_NETWORK_CONNECTED = 3;
     public static final int EVENT_EMP_ERROR = 4;
-
+    public static final int EVENT_LOGIN_SUCCESS = 5;
+    public static final int EVENT_LOGIN_FAILED = 6;
 
     private int type;
     private String info;

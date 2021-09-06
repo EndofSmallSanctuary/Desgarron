@@ -1,5 +1,11 @@
 package com.example.desgarron.Logic.SigurComponents;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.example.desgarron.SettingsFragment;
+import com.example.desgarron.Utils.Utils;
+
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -68,6 +74,37 @@ public class Crypto {
         }
     }
 
+    private static byte[] getKey(Context context) {
+        int i;
+        int i2;
+        String str = DeviceId.get(context);
+        Log.d(Crypto.class.getName(), "device id = [" + str + "]");
+        byte[] hexStringToBytes = hexStringToBytes(str);
+        byte[] bArr = new byte[16];
+        int i3 = 0;
+        int i4 = 0;
+        while (true) {
+            if (i4 == 0 || i4 == 1 || i4 == 8 || i4 == 9 || i4 == 10) {
+                bArr[i4] = 108;
+                i = i4 + 1;
+                i2 = i3;
+            } else if (i3 < 8) {
+                i2 = i3 + 1;
+                bArr[i4] = hexStringToBytes[i3];
+                i = i4 + 1;
+            } else {
+                bArr[i4] = 0;
+                i = i4 + 1;
+                i2 = i3;
+            }
+            if (i >= 16) {
+                return bArr;
+            }
+            i4 = i;
+            i3 = i2;
+        }
+    }
+
 
 
     private static byte[] hexStringToBytes(String str) {
@@ -79,11 +116,11 @@ public class Crypto {
         return bArr;
     }
 
-    public static void init(byte[] getkey) {
+    static public void init(Context context) {
         if (key != null) {
             //  throw new IllegalStateException();
         }
-        System.out.println("crypto initiated");
-        key = getkey;
+        key = getKey(context);
+        Log.d("crypto", Utils.bytesToHexString(key));
     }
 }

@@ -5,10 +5,11 @@ import java.nio.ByteBuffer;
 public class SigurTransaction {
 
     //TRANSACTION-TYPES
-    public static final int TRANSACTION_EXIT = 1;
+    public static final int TRANSACTION_EXIT = 3;
     public static final int TRANSACTION_ENTRY = 2;
     public static final int TRANSACTION_EMP = 4;
     public static final int TRANSACTION_PING = 1;
+    public static final int TRANSACTION_LOGIN = 5;
 
     private int type;
     private ByteBuffer content;

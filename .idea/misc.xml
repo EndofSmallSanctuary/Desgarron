@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/drawable/login_edittext_round.xml" value="0.36666666666666664" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/activity_main.xml" value="0.2033514492753623" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/app_navigation_bar.xml" value="0.3645833333333333" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/content_main.xml" value="0.3645833333333333" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/fragment_auth.xml" value="0.3645833333333333" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/fragment_e_m_p.xml" value="0.3645833333333333" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/fragment_settings.xml" value="0.362962962962963" />
+        <entry key="..\:/E/desgarron_nfc-terminal/app/src/main/res/layout/fragment_terminal.xml" value="0.33" />
         <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_enter_to_app_24.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/User-4999900221/AndroidStudioProjects/Desgarron/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.3807291666666667" />

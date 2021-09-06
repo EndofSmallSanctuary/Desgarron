@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.desgarron.Log.DesgarronLog;
 import com.example.desgarron.Logic.SigurComponents.Crypto;
 import com.example.desgarron.Logic.SigurComponents.PacketManager;
 import com.example.desgarron.Logic.SigurComponents.PacketReader;
@@ -36,17 +37,20 @@ public class OperationService extends Service {
 
     MutableLiveData<Emp2_0> empResult = new MutableLiveData<>();
 
+
+
     public MutableLiveData<Emp2_0> getEmpResult() {
         return empResult;
     }
 
+    private final int connectionCheckInterval = 3000;
+    private final int pingMSGLength = 8;
     private final IBinder binder = new OperationBinder();
     Provider networkProvider = new Provider();
     SocketChannel sigurChannel;
     PacketReader reader = new PacketReader();
     PacketWriter writer = new PacketWriter();
     Boolean binded = false;
-    boolean authB = false;
     Selector selector;
     BlockingQueue<SigurTransaction> transactions;
 
@@ -60,7 +64,6 @@ public class OperationService extends Service {
     public void onChannelCreated(SocketChannel channel) {
         this.sigurChannel = channel;
         this.transactions = new LinkedBlockingQueue<>();
-        String auth = "0000003100000001000000010000006B000000077465737400D41D8CD98F00B204E9800998ECF8427E738D275082B1709B";
 
         //ПОМЕНЯТЬ СТРУКТУРУ
         Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -84,37 +87,47 @@ public class OperationService extends Service {
                                 // a connection was established with a remote server.
                             } else if (key.isReadable()) {
                                 InPacket newPacket = reader.read(sigurChannel);
-                                if(newPacket.mData.array().length>16) {
+                                //Кто-то поменял нас в сигуре
+                                Log.d("desdogs",Utils.bytesToHexString(newPacket.mData.array()));
+                                if(newPacket.mData.array().length!=pingMSGLength) {
                                     if (awaitedTransaction != null) {
                                         switch (awaitedTransaction.getType()) {
                                             case SigurTransaction.TRANSACTION_EMP: {
                                                 try {
                                                     Emp2_0 empSigurBASE = PacketManager.onEMPAwaited(newPacket);
                                                     empResult.postValue(empSigurBASE);
-                                                    Log.d("grimjow", empSigurBASE.toString());
                                                 } catch (Exception e) {
-                                                    Log.d("grimjow", e.getMessage());
                                                     e.printStackTrace();
+                                                    DesgarronLog.append(e.getMessage());
                                                     transferEvent(new NetworkEvent(NetworkEvent.EVENT_EMP_ERROR, "Ошибка парсинга челика"));
-                                                }
-                                                finally {
+                                                } finally {
                                                     awaitedTransaction = null;
                                                 }
+                                                break;
+                                            }
+                                            case SigurTransaction.TRANSACTION_LOGIN: {
+                                                try {
+                                                    if (!PacketManager.onLoginAwaited(newPacket))
+                                                        transferEvent(new NetworkEvent(NetworkEvent.EVENT_LOGIN_FAILED, "Ошибка логина"));
+                                                    else transferEvent(new NetworkEvent(NetworkEvent.EVENT_LOGIN_SUCCESS,""));
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    DesgarronLog.append(e.getMessage());
+                                                } finally {
+                                                    awaitedTransaction = null;
+                                                }
+                                                break;
                                             }
                                         }
                                     }
                                 }
                             } else if (key.isWritable()) {
                                 //Авторизацию в очередь
-                                if(!authB) {
-                                    channel.write(ByteBuffer.wrap(Utils.hexStringToBytes(auth)));
-                                    authB=true;
-                                } else {
                                     if(transactions.size()>0) {
                                         awaitedTransaction = transactions.poll();
                                         writer.writeTransaction(sigurChannel, awaitedTransaction);
                                     }
-                                }
+
                             }
                             keyIterator.remove();
                         }
@@ -125,11 +138,10 @@ public class OperationService extends Service {
                     try {
                         networkProvider.validateANDfinishSocket(sigurChannel);
                     } catch (Exception e){
-                       Log.d("grimjow",e.getMessage());
+                       DesgarronLog.append(e.getMessage());
                     }
                 } catch (IOException e) {
-                    authB = false;
-                    Log.d("grimjowIO", e.getMessage());
+                    DesgarronLog.append(e.getMessage());
                     networkProvider.validateANDfinishSocket(sigurChannel);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -142,7 +154,7 @@ public class OperationService extends Service {
     public boolean onUnbind(Intent intent) {
         binded=false;
         connection_handler.removeCallbacks(connection_runnable);
-        Log.d("grimjow","service unbind");
+        DesgarronLog.append("Terminal service unbinded");
         return super.onUnbind(intent);
     }
 
@@ -163,14 +175,12 @@ public class OperationService extends Service {
         Bundle bundle = new Bundle();
         bundle.putParcelable("event_content",event);
         intent.putExtra("event",bundle);
-        Log.d("grimjow","sending broadcast");
         sendBroadcast(intent);
     }
 
 
 
     public void onAddrSelected(String servername){
-            Crypto.init(Utils.hexStringToBytes("6C6C738D275082B16C6C6C709B000000"));
            // transactions = new LinkedBlockingQueue<>();
             postConnection(servername);
 
@@ -190,9 +200,8 @@ public class OperationService extends Service {
                 if(sigurChannel==null||sigurChannel.socket().isClosed()){
                 networkProvider.doInBackGround(OperationService.this,servername);
                 }
-                else Log.d("grimjow","socket open");
 
-                connection_handler.postDelayed(connection_runnable,6000);
+                connection_handler.postDelayed(connection_runnable,connectionCheckInterval);
             }
         };
 

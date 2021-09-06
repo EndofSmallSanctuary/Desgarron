@@ -1,7 +1,6 @@
 package com.example.desgarron.Logic.SocketManagement;
 
-import android.util.Log;
-
+import com.example.desgarron.Log.DesgarronLog;
 import com.example.desgarron.Models.NetworkEvent;
 
 import java.io.IOException;
@@ -42,22 +41,18 @@ public class Provider extends AsynkTaskisBack{
                         onPostexecute(service, null);
                         return;
                     } catch (IOException e) {
-                        Log.d("grimjow", e.getMessage());
-                        onPostexecute(service, new NetworkEvent(NetworkEvent.EVENT_NETWORK_ERROR, "Не удалось установить соеднинение"));
+                        onPostexecute(service, new NetworkEvent(NetworkEvent.EVENT_NETWORK_DISCONNECTED, "Не удалось установить соеднинение"));
                         return;
                     } catch (InterruptedException e) {
-                        Log.d("grimjow", e.getMessage());
                         return;
                     } catch (UnresolvedAddressException e) {
-                        Log.d("grimjow", "Адрес параша");
-                        onPostexecute(service, new NetworkEvent(NetworkEvent.EVENT_NETWORK_ERROR, "Адрес параша"));
+                        onPostexecute(service, new NetworkEvent(NetworkEvent.EVENT_NETWORK_DISCONNECTED, "Адрес параша"));
                         return;
                     }
 
                 }
             });
         } else {
-            Log.d("grimjow","socket already connected");
 //            onPostexecute(service,null);
         }
     }
@@ -73,9 +68,9 @@ public class Provider extends AsynkTaskisBack{
                 }
 
                 if (!channel.isConnected()) {
-                    service.transferEvent(new NetworkEvent(NetworkEvent.EVENT_NETWORK_ERROR, "Сервах сдох нах"));
+                    service.transferEvent(new NetworkEvent(NetworkEvent.EVENT_NETWORK_DISCONNECTED, "Сервах сдох нах"));
                 } else {
-                    service.transferEvent(new NetworkEvent(NetworkEvent.EVENT_NETWORK_SUCCESS, ""));
+                    service.transferEvent(new NetworkEvent(NetworkEvent.EVENT_NETWORK_CONNECTED, "Установлено соединение"));
                     service.onChannelCreated(channel);
                 }
             }
@@ -88,7 +83,7 @@ public class Provider extends AsynkTaskisBack{
         try {
             channel.socket().close();
         } catch (IOException e) {
-            Log.d("grimjowExeption",e.getMessage());
+            DesgarronLog.append(e.getMessage());
         }
     }
 

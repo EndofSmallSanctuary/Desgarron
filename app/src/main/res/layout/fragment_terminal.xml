@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
      <ImageView
          app:layout_constraintTop_toTopOf="parent"
          app:layout_constraintStart_toStartOf="parent"
@@ -22,9 +20,111 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"/>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/auth_connected_holder"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/auth_connectedto_header"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="40dp"
+                android:textSize="20sp"
+                android:text="Успешно подключено ✓"
+                android:fontFamily="@font/gilroy_regular"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/auth_connectedto_host"
+                app:layout_constraintTop_toBottomOf="@id/auth_connectedto_header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="192.6.6.6"
+                android:textSize="22sp"
+                android:fontFamily="@font/gilroy_bold"
+                android:textColor="#F4A451"
+                android:textAlignment="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/auth_login"
+                android:textColor="@color/white"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:fontFamily="@font/gilroy_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/login_edittext_round"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="60dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_bold"
+                app:layout_constraintStart_toStartOf="@id/auth_login"
+                app:layout_constraintBottom_toTopOf="@id/auth_login"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:layout_marginBottom="2dp"
+                android:text="Логин"/>
+
+            <EditText
+                android:id="@+id/auth_password"
+                android:textColor="@color/white"
+                android:fontFamily="@font/gilroy_bold"
+                app:layout_constraintTop_toBottomOf="@id/auth_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="40dp"
+                android:paddingStart="5dp"
+                android:inputType="text"
+                android:paddingEnd="5dp"
+                android:background="@drawable/login_edittext_round"
+                android:layout_width="200dp"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_bold"
+                app:layout_constraintStart_toStartOf="@id/auth_password"
+                app:layout_constraintBottom_toTopOf="@id/auth_password"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:layout_marginBottom="2dp"
+                android:text="Пароль"/>
+
+
+            <Button
+                android:id="@+id/auth_enter"
+                android:textColor="@color/white"
+                android:text="Desgarron"
+                android:fontFamily="@font/gilroy_bold"
+                android:background="@drawable/login_edittext_round"
+                android:backgroundTint="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/auth_password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="40dp"
+                android:layout_width="200dp"
+                android:layout_height="45dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.github.ybq.android.spinkit.SpinKitView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/terminal_loading"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

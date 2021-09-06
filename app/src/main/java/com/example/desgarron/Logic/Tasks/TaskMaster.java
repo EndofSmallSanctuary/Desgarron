@@ -1,11 +1,15 @@
 package com.example.desgarron.Logic.Tasks;
 
+import android.util.Log;
+
 import com.example.desgarron.Logic.SigurComponents.Crypto;
 import com.example.desgarron.Models.Direction;
 import com.example.desgarron.Models.Protocol;
 import com.example.desgarron.Models.Request;
 import com.example.desgarron.Models.SigurTransaction;
+import com.example.desgarron.Utils.Utils;
 
+import java.security.MessageDigest;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -43,5 +47,28 @@ public class TaskMaster {
                 return new SigurTransaction(SigurTransaction.TRANSACTION_EXIT,request.toBuffer());
             }
            return null;
+    }
+
+    public static SigurTransaction createLoginRequest(String... strArr) {
+        String str = strArr[0];
+        String str2 = strArr[1];
+        String str3 = strArr[2];
+        if (str == null) {
+            throw new IllegalArgumentException();
+        } else if (str2 == null) {
+            throw new IllegalArgumentException();
+        } else if (str3 == null) {
+            throw new IllegalArgumentException();
+        } else {
+            Request request = new Request(107);
+            request.putInt(7);
+            request.putString(str);
+            request.putBytes(Utils.getPasswordHash(str2));
+            request.putBytes(Utils.hexStringToBytes(str3));
+            return new SigurTransaction(SigurTransaction.TRANSACTION_LOGIN,request.toBuffer());
         }
     }
+
+
+}
+

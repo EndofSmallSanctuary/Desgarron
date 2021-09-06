@@ -63,11 +63,7 @@ public class SigurLog implements Parcelable {
             this.mEmpId = i;
             this.mDirection = i2;
             this.mDatetime = date;
-            android.util.Log.d("Lizard mId",mId+"");
-            android.util.Log.d("Lizard empid",mEmpId+"");
-            android.util.Log.d("Lizard direction",mDirection+"");
-            android.util.Log.d("Lizard date",mDatetime+"");
-        } else {
+         } else {
             throw new IllegalArgumentException();
         }
     }

@@ -3,6 +3,7 @@ package com.example.desgarron.Logic.SigurComponents;
 
 import android.util.Log;
 
+import com.example.desgarron.Log.DesgarronLog;
 import com.example.desgarron.Models.Direction;
 import com.example.desgarron.Models.Emp2_0;
 import com.example.desgarron.Models.EmpSigurBASE;
@@ -12,6 +13,56 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PacketManager {
+
+
+    public static boolean onLoginAwaited(InPacket inPacket) {
+        if (inPacket == null) {
+            throw new IllegalArgumentException();
+        } else if (inPacket.getType() != 2) {
+            throw new IllegalArgumentException();
+        } else if (inPacket.getCode() != 108) {
+            throw new IllegalArgumentException();
+        } else {
+            int extractInt = inPacket.extractInt();
+            Log.d("desdogs2",extractInt+"");
+            if (extractInt == 11) {
+                DesgarronLog.append("parseResponse(). licence violation error");
+                return false;
+            } else if (extractInt == 1) {
+                DesgarronLog.append("parseResponse(). wrong request error");
+                return false;
+            } else if (extractInt == 10) {
+                DesgarronLog.append("parseResponse(). wrong request type error");
+                return false;
+            } else if (extractInt == 2) {
+                DesgarronLog.append("parseResponse(). db error");
+                return false;
+            } else if (extractInt == 3) {
+                DesgarronLog.append("parseResponse(). unknown terminal error");
+                return false;
+            } else if (extractInt == 4) {
+                DesgarronLog.append("parseResponse(). unknown user error");
+                return false;
+            } else if (extractInt == 7) {
+                DesgarronLog.append("parseResponse(). user password error");
+                return false;
+            } else if (extractInt == 5) {
+                DesgarronLog.append("parseResponse(). user access error");
+                return false;
+            } else if (extractInt == 6) {
+                DesgarronLog.append("parseResponse(). user flags error");
+                return false;
+            } else if (extractInt == 9) {
+                DesgarronLog.append("parseResponse(). access policy error");
+                return false;
+            } else if (extractInt != 0) {
+                DesgarronLog.append("parseResponse(). unknown error");
+                return false;
+            }
+        }
+            return true;
+    }
+
 
     public static Emp2_0 onEMPAwaited(InPacket inPacket) {
         byte[] bArr;
@@ -23,7 +74,7 @@ public class PacketManager {
             throw new IllegalArgumentException();
         } else {
             int extractInt = inPacket.extractInt();
-            System.out.println(extractInt);
+            Log.d("dogs",extractInt+""+" "+inPacket.getType()+" "+inPacket.getCode());
             if (extractInt == 11) {
                 System.out.println("parseResponse(). licence violation error");
                 return null;
@@ -117,4 +168,6 @@ public class PacketManager {
        }
        return builder.toString();
     }
+
+
 }

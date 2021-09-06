@@ -18,8 +18,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.desgarron.Log.DesgarronLog;
+import com.example.desgarron.Logic.SigurComponents.Crypto;
+import com.example.desgarron.Logic.SigurComponents.DeviceId;
 import com.example.desgarron.Logic.SocketManagement.OperationService;
 import com.example.desgarron.Logic.Tasks.TaskMaster;
 import com.example.desgarron.Models.Emp2_0;
@@ -40,8 +46,19 @@ public class TerminalFragment extends Fragment {
 
      Emp2_0 toSaveEMP;
 
+    @BindView(R.id.auth_connected_holder)
+    ConstraintLayout auth_form_holder;
+    @BindView(R.id.auth_connectedto_host)
+    TextView auth_form_host;
+    @BindView(R.id.auth_login)
+    EditText auth_form_login;
+    @BindView(R.id.auth_password)
+    EditText auth_form_password;
+    @BindView(R.id.auth_enter)
+    Button auth_form_enter;
 
-     @BindView(R.id.terminal_emp_container)
+
+    @BindView(R.id.terminal_emp_container)
      ConstraintLayout container;
      @BindView(R.id.terminal_loading)
      SpinKitView loadingView;
@@ -53,12 +70,14 @@ public class TerminalFragment extends Fragment {
      OperationService mService;
      String terminal_host;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         if (getArguments() != null) {
         }
+        Crypto.init(getActivity());
     }
 
     @Override
@@ -66,12 +85,27 @@ public class TerminalFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_terminal, container, false);
         ButterKnife.bind(this,view);
+
+
         foreground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 preparePacket(TaskMaster.createEMPTransaction(Utils.hexStringToBytes("049346924F5F80")));
             }
         });
+        auth_form_enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(auth_form_login.getText().toString().length()>0) {
+                    SigurTransaction transaction = TaskMaster.createLoginRequest(
+                            auth_form_login.getText().toString().trim(),
+                            auth_form_password.getText().toString().trim(),
+                            DeviceId.get(getActivity()));
+                    preparePacket(transaction);
+                }
+            }
+        });
+
 
         return view;
     }
@@ -121,7 +155,7 @@ public class TerminalFragment extends Fragment {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.d("grimjow","serviceDisconnected");
+            DesgarronLog.append("Terminal service disconnected");
         }
     };
 
@@ -134,32 +168,54 @@ public class TerminalFragment extends Fragment {
                     Bundle b = intent.getParcelableExtra("event");
                     NetworkEvent event = (NetworkEvent) b.getParcelable("event_content");
                     switch (event.getType()){
-                        case NetworkEvent.EVENT_NETWORK_ERROR:{
+                        case NetworkEvent.EVENT_NETWORK_DISCONNECTED:{
+
                             loadingView.setVisibility(View.VISIBLE);
+
                             foreground.setVisibility(View.GONE);
+
+                            auth_form_holder.setVisibility(View.GONE);
+
+                            DesgarronLog.append(event.getInfo());
                             Toasty.error(context,event.getInfo(),Toasty.LENGTH_SHORT).show();
                             break;
                         }
                         case NetworkEvent.EVENT_WARNING:{
+                            DesgarronLog.append(event.getInfo());
                             Toasty.warning(context,event.getInfo(),Toasty.LENGTH_SHORT).show();
                             break;
                         }
-                        case NetworkEvent.EVENT_NETWORK_SUCCESS:{
-                            loadingView.setVisibility(View.GONE);
-                            foreground.setVisibility(View.VISIBLE);
-//                            Toasty.success(context,event.getInfo(),Toasty.LENGTH_LONG).show();
+                        case NetworkEvent.EVENT_NETWORK_CONNECTED:{
+                            onConnectionEstablished(event);
+                            Toasty.success(context,event.getInfo(),Toasty.LENGTH_LONG).show();
                             break;
                         }
-                        case NetworkEvent.EVENT_EMP_ERROR:{
+                        case NetworkEvent.EVENT_EMP_ERROR:
+                        case NetworkEvent.EVENT_LOGIN_FAILED: {
+                            DesgarronLog.append(event.getInfo());
                             Toasty.error(context,event.getInfo(),Toasty.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case NetworkEvent.EVENT_LOGIN_SUCCESS:{
+                            DesgarronLog.append("Login successfull");
+                            Toasty.success(context,event.getInfo(),Toasty.LENGTH_LONG).show();
+                            auth_form_holder.setVisibility(View.GONE);
+                            foreground.setVisibility(View.VISIBLE);
                             break;
                         }
                     }
                 } catch (Exception e){
-                    e.printStackTrace();
+                    DesgarronLog.append(e.getMessage());
                 }
             }
         }
+    }
+
+    private void onConnectionEstablished(NetworkEvent event) {
+        loadingView.setVisibility(View.GONE);
+        DesgarronLog.append(event.getInfo());
+        auth_form_host.setText(preferences.getString("ip_terminal",""));
+        auth_form_holder.setVisibility(View.VISIBLE);
     }
 
     private void fillEmpFragment(Emp2_0 emp2_0){
@@ -182,7 +238,6 @@ public class TerminalFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        Log.d("dogs","parent destoryed");
         super.onDestroy();
     }
 

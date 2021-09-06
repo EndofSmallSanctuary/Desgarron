@@ -1,43 +1,28 @@
 package com.example.desgarron;
 
-import android.content.BroadcastReceiver;
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
-import com.example.desgarron.Models.NetworkEvent;
-import com.github.ybq.android.spinkit.SpinKitView;
+import com.example.desgarron.Log.DesgarronLog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
-import android.view.View;
-
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity{
-
-
     @BindView(R.id.content_placeholder)
     FrameLayout fragmentPlaceholder;
     @BindView(R.id.bottom_navigation)
@@ -49,6 +34,9 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
         ButterKnife.bind(this);
+
+        if(isStoragePermissionGranted())
+            DesgarronLog.prepareLogFile(this);
 
         if(savedInstanceState==null){
             getSupportFragmentManager().
@@ -102,4 +90,20 @@ public class MainActivity extends AppCompatActivity{
         }
         super.onBackPressed();
     }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
 }
